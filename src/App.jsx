@@ -10,12 +10,70 @@ import NotificationsView from './components/NotificationsView';
 import SettingsView from './components/SettingsView';
 import EmailModal from './components/EmailModal';
 import InterventionModal from './components/InterventionModal';
+import UserProfileModal from './components/UserProfileModal';
 import { CheckCircle2, AlertCircle, Info, X, GraduationCap, Sun, Moon } from 'lucide-react';
+
+const INITIAL_PROFILE = {
+  id: 'supervisor',
+  name: 'Dr. Sweta Thakur',
+  role: 'Course Coordinator & Academic Supervisor',
+  handle: 'KOI ICT753 • @koi.academics',
+  email: 's.thakur@koi.edu.au',
+  avatarInitials: 'ST',
+  institution: "King's Own Institute (KOI)",
+  status: 'Available / Online',
+  notifyAttendance: true,
+  notifySLA: true,
+  notifyDigest: true,
+};
+
+const INITIAL_NOTIFICATIONS = [
+  {
+    id: 1,
+    title: 'Student_38 High Risk Flagged',
+    description: 'Attendance fell to 30% in BUS301 (<50% threshold). Remedial warning pending.',
+    type: 'risk',
+    time: '10m ago',
+    studentId: 'S10038',
+    read: false,
+  },
+  {
+    id: 2,
+    title: '24h Remedial Notice Generated',
+    description: 'Automated email drafted for S10041 (MIS101) with LMS catch-up links.',
+    type: 'email',
+    time: '25m ago',
+    studentId: 'S10041',
+    read: false,
+  },
+  {
+    id: 3,
+    title: 'Intervention Agreement Signed',
+    description: 'Student_48 agreed to makeup workshops. Case marked as Resolved.',
+    type: 'intervention',
+    time: '1h ago',
+    studentId: 'S10048',
+    read: true,
+  },
+  {
+    id: 4,
+    title: 'Python Batch Engine Finished',
+    description: 'Evaluated 50 student records across 5 subjects for Week 4 checkpoint.',
+    type: 'risk',
+    time: '2h ago',
+    read: true,
+  },
+];
 
 export default function App() {
   const [activeTab, setActiveTab] = useState('dashboard');
   const [darkMode, setDarkMode] = useState(false);
   const [students, setStudents] = useState(INITIAL_STUDENTS);
+
+  // Workable User Profile State
+  const [userProfile, setUserProfile] = useState(INITIAL_PROFILE);
+  const [profileModalOpen, setProfileModalOpen] = useState(false);
+  const [notifications, setNotifications] = useState(INITIAL_NOTIFICATIONS);
 
   // Threshold controls
   const [attendanceThreshold, setAttendanceThreshold] = useState(50);
@@ -156,6 +214,35 @@ export default function App() {
     );
   };
 
+  // Switch demo persona
+  const handleSwitchRole = (roleKey) => {
+    if (roleKey === 'supervisor') {
+      setUserProfile(INITIAL_PROFILE);
+      addToast('info', 'Persona Switched', 'Switched to Dr. Sweta Thakur (Supervisor)');
+    } else {
+      setUserProfile({
+        id: 'student_lead',
+        name: 'Moses Kiprop KIPKOECH',
+        role: 'Project Manager & Student Lead',
+        handle: 'KOI ICT753 • @moses.kiprop',
+        email: 'm.kipkoech@koi.edu.au',
+        avatarInitials: 'MK',
+        institution: "King's Own Institute (KOI)",
+        status: 'Available / Online',
+        notifyAttendance: true,
+        notifySLA: true,
+        notifyDigest: false,
+      });
+      addToast('info', 'Persona Switched', 'Switched to Moses Kiprop (Student Lead)');
+    }
+  };
+
+  // Mark all notifications read
+  const handleMarkAllNotificationsRead = () => {
+    setNotifications((prev) => prev.map((n) => ({ ...n, read: true })));
+    addToast('success', 'Notifications Updated', 'All alert notices marked as read.');
+  };
+
   // Export Master Dataset as CSV
   const handleExportCsv = () => {
     const headers = [
@@ -197,19 +284,24 @@ export default function App() {
     addToast('success', 'Master Dataset Exported', 'Downloaded KOI_ICT753_ASRIS_Master_Dataset.csv');
   };
 
-  const atRiskCount = students.filter(s => s.stillAtRisk.includes('Needs Follow Up')).length;
+  const atRiskCount = students.filter((s) => s.stillAtRisk.includes('Needs Follow Up')).length;
 
   return (
     <div className="min-h-screen bg-[#f8f9fc] dark:bg-[#0c0b14] text-slate-800 dark:text-slate-100 flex flex-col md:flex-row transition-colors duration-200">
       {/* Mobile Top Header (only visible on mobile < md) */}
       <header className="md:hidden sticky top-0 z-30 bg-white/90 dark:bg-[#0e0c18]/90 backdrop-blur-md border-b border-slate-200/80 dark:border-slate-800/80 px-4 py-3 flex items-center justify-between">
-        <div className="flex items-center gap-2.5">
-          <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-purple-600 to-indigo-500 flex items-center justify-center text-white shadow-sm">
-            <GraduationCap className="w-4 h-4" />
+        <div 
+          onClick={() => setProfileModalOpen(true)}
+          className="flex items-center gap-2.5 cursor-pointer"
+        >
+          <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-purple-600 to-indigo-500 flex items-center justify-center text-white shadow-sm font-bold text-xs">
+            {userProfile.avatarInitials}
           </div>
           <div>
-            <h1 className="text-xs font-extrabold tracking-tight text-slate-900 dark:text-white">ASRIS Platform</h1>
-            <p className="text-[10px] text-slate-400 font-medium">KOI ICT753 • Dr. Sweta Thakur</p>
+            <h1 className="text-xs font-extrabold tracking-tight text-slate-900 dark:text-white truncate max-w-[160px]">
+              {userProfile.name}
+            </h1>
+            <p className="text-[10px] text-slate-400 font-medium">{userProfile.role}</p>
           </div>
         </div>
 
@@ -258,6 +350,12 @@ export default function App() {
             attendanceThreshold={attendanceThreshold}
             setAttendanceThreshold={setAttendanceThreshold}
             isSimulating={isSimulating}
+            userProfile={userProfile}
+            onOpenProfileModal={() => setProfileModalOpen(true)}
+            onSwitchRole={handleSwitchRole}
+            notifications={notifications}
+            onMarkAllNotificationsRead={handleMarkAllNotificationsRead}
+            onViewAllNotifications={() => setActiveTab('notifications')}
           />
         )}
 
@@ -311,12 +409,12 @@ export default function App() {
                 ← Back to Executive Dashboard
               </button>
             </div>
-            <InterventionsView 
-              students={students} 
+            <InterventionsView
+              students={students}
               onOpenInterventionModal={(student) => {
                 setSelectedStudentForIntervention(student);
                 setInterventionModalOpen(true);
-              }} 
+              }}
             />
           </div>
         )}
@@ -331,13 +429,13 @@ export default function App() {
                 ← Back to Executive Dashboard
               </button>
             </div>
-            <NotificationsView 
-              students={students} 
+            <NotificationsView
+              students={students}
               onOpenEmailModal={(student) => {
                 setSelectedStudentForEmail(student);
                 setEmailModalOpen(true);
-              }} 
-              onBatchDispatch={handleBatchDispatch} 
+              }}
+              onBatchDispatch={handleBatchDispatch}
             />
           </div>
         )}
@@ -365,6 +463,17 @@ export default function App() {
           </div>
         )}
       </main>
+
+      {/* User Profile Modal */}
+      <UserProfileModal
+        isOpen={profileModalOpen}
+        onClose={() => setProfileModalOpen(false)}
+        userProfile={userProfile}
+        onSaveProfile={(updated) => {
+          setUserProfile(updated);
+          addToast('success', 'Profile Updated', 'Faculty supervisor profile details saved successfully.');
+        }}
+      />
 
       {/* Modals */}
       <EmailModal

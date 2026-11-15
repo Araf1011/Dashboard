@@ -132,3 +132,4 @@ export default function NotificationsView({ students, onOpenEmailModal, onBatchD
     </div>
   );
 }
+

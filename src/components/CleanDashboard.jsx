@@ -19,6 +19,8 @@ import {
   ResponsiveContainer 
 } from 'recharts';
 import { Flower3D, Star3D, Arrow3D, Cube3D, Quote3D, Ribbon3D } from './Geometric3DIcons';
+import UserProfileMenu from './UserProfileMenu';
+import NotificationsPopover from './NotificationsPopover';
 
 export default function CleanDashboard({
   students,
@@ -27,18 +29,27 @@ export default function CleanDashboard({
   onRunBatchAlert,
   attendanceThreshold,
   setAttendanceThreshold,
-  isSimulating
+  isSimulating,
+  userProfile,
+  onOpenProfileModal,
+  onSwitchRole,
+  notifications,
+  onMarkAllNotificationsRead,
+  onViewAllNotifications
 }) {
   const [selectedChartWeek, setSelectedChartWeek] = useState('Week 4');
   const [showSlider, setShowSlider] = useState(false);
+  const [profileMenuOpen, setProfileMenuOpen] = useState(false);
+  const [notificationsOpen, setNotificationsOpen] = useState(false);
 
   // Dynamic metrics from student data
   const totalStudents = students.length;
   const atRiskCount = students.filter(s => s.stillAtRisk.includes('Needs Follow Up')).length;
   const resolvedCount = students.filter(s => s.stillAtRisk === 'Resolved').length;
   const clearanceRate = Math.round((resolvedCount / totalStudents) * 100);
+  const unreadNotificationsCount = notifications.filter(n => !n.read).length;
 
-  // Smooth spline chart data matching the elegant curved style from the image
+  // Smooth spline chart data
   const chartData = [
     { day: 'Mon', attendance: 78, hours: '3.8h', flag: 'Normal' },
     { day: 'Tue', attendance: 82, hours: '4.1h', flag: 'Normal' },
@@ -49,7 +60,6 @@ export default function CleanDashboard({
     { day: 'Sun', attendance: 72, hours: '3.6h', flag: 'Recovered' },
   ];
 
-  // Custom sleek tooltip matching "Friday 1h 32 min" black pill in reference
   const CustomTooltip = ({ active, payload, label }) => {
     if (active && payload && payload.length) {
       const data = payload[0].payload;
@@ -68,8 +78,8 @@ export default function CleanDashboard({
 
   return (
     <div className="space-y-5 sm:space-y-6">
-      {/* Top Bar: Search Pill & User Profile */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+      {/* Top Bar: Search Pill & Workable User Profile Section */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 relative z-30">
         {/* Rounded Search Pill */}
         <div className="relative w-full sm:max-w-xs md:max-w-sm">
           <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
@@ -82,35 +92,76 @@ export default function CleanDashboard({
           />
         </div>
 
-        {/* User Profile Pill */}
-        <div className="flex items-center justify-between sm:justify-end space-x-3">
-          <div className="text-left sm:text-right">
-            <div className="font-bold text-xs text-slate-900 dark:text-white">Dr. Sweta Thakur</div>
-            <div className="text-[10px] sm:text-[11px] text-slate-400 font-medium">KOI ICT753 • @koi.academics</div>
-          </div>
+        {/* Workable User Profile Section */}
+        <div className="flex items-center justify-between sm:justify-end space-x-3 relative">
+          {/* Clickable Profile Pill */}
+          <button
+            onClick={() => {
+              setProfileMenuOpen(!profileMenuOpen);
+              setNotificationsOpen(false);
+            }}
+            className="flex items-center gap-2.5 p-1 sm:p-1.5 rounded-2xl hover:bg-white/80 dark:hover:bg-slate-800/80 border border-transparent hover:border-slate-200 dark:hover:border-slate-700 transition-all text-left group"
+            title="Click to view supervisor profile and switch roles"
+          >
+            <div className="text-right hidden sm:block">
+              <div className="font-bold text-xs text-slate-900 dark:text-white group-hover:text-indigo-600 transition-colors">
+                {userProfile.name}
+              </div>
+              <div className="text-[10px] sm:text-[11px] text-slate-400 font-medium">
+                {userProfile.handle}
+              </div>
+            </div>
 
-          <div className="flex items-center space-x-2">
             <div className="relative">
               <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-full overflow-hidden border-2 border-indigo-200 dark:border-indigo-900 shadow-sm bg-gradient-to-tr from-indigo-500 to-purple-400 flex items-center justify-center text-white font-bold text-xs">
-                ST
+                {userProfile.avatarInitials}
               </div>
               <span className="absolute bottom-0 right-0 w-2 h-2 bg-emerald-500 border-2 border-white dark:border-slate-900 rounded-full" />
             </div>
+          </button>
 
+          {/* Clickable Bell / Notification Popover Trigger */}
+          <div className="relative">
             <button 
-              onClick={() => onOpenEmailModal(students[0])}
-              className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 flex items-center justify-center text-slate-500 hover:text-slate-900 dark:hover:text-white transition-colors relative"
-              title="Notification Center"
+              onClick={() => {
+                setNotificationsOpen(!notificationsOpen);
+                setProfileMenuOpen(false);
+              }}
+              className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 flex items-center justify-center text-slate-500 hover:text-slate-900 dark:hover:text-white hover:border-indigo-300 transition-colors relative"
+              title="View live alerts & remedial notices"
             >
               <Bell className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
-              <span className="absolute top-1.5 right-1.5 w-1.5 h-1.5 bg-rose-500 rounded-full" />
+              {unreadNotificationsCount > 0 && (
+                <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-rose-500 rounded-full animate-pulse" />
+              )}
             </button>
+
+            {/* Notifications Popover Dropdown */}
+            <NotificationsPopover
+              isOpen={notificationsOpen}
+              onClose={() => setNotificationsOpen(false)}
+              notifications={notifications}
+              onMarkAllRead={onMarkAllNotificationsRead}
+              onViewAllNotifications={onViewAllNotifications}
+              onOpenEmailModal={onOpenEmailModal}
+              students={students}
+            />
           </div>
+
+          {/* User Profile Flyout Menu */}
+          <UserProfileMenu
+            isOpen={profileMenuOpen}
+            onClose={() => setProfileMenuOpen(false)}
+            userProfile={userProfile}
+            onEditProfile={onOpenProfileModal}
+            onSwitchRole={onSwitchRole}
+            onViewAssignedStudents={onOpenTable}
+          />
         </div>
       </div>
 
       {/* Main Grid: Left 2/3 and Right 1/3 */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 sm:gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 sm:gap-6 relative z-10">
         {/* LEFT COLUMN: Metrics + Smooth Spline Chart + Subject Cards (8 Cols) */}
         <div className="lg:col-span-8 space-y-5 sm:space-y-6">
           {/* 4 Clean Metric Cards */}
@@ -164,7 +215,7 @@ export default function CleanDashboard({
             </div>
           </div>
 
-          {/* Smooth Spline Chart: Class Attendance & Early Warning Trajectory */}
+          {/* Smooth Spline Chart */}
           <div className="bg-white dark:bg-slate-900 p-4 sm:p-6 rounded-2xl sm:rounded-3xl border border-slate-200/60 dark:border-slate-800/80 shadow-xs space-y-3 sm:space-y-4">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
               <div>
