@@ -8,7 +8,12 @@ import {
   Zap, 
   Sliders, 
   Mail, 
-  ArrowRight
+  ArrowRight,
+  UserCheck,
+  Terminal,
+  FileSpreadsheet,
+  ShieldCheck,
+  Layers
 } from 'lucide-react';
 import { 
   AreaChart, 
@@ -18,7 +23,7 @@ import {
   Tooltip, 
   ResponsiveContainer 
 } from 'recharts';
-import { Flower3D, Star3D, Arrow3D, Cube3D, Quote3D, Ribbon3D } from './Geometric3DIcons';
+import { MIS101Icon, ICT201Icon, BUS301Icon } from './CourseIcons';
 import UserProfileMenu from './UserProfileMenu';
 import NotificationsPopover from './NotificationsPopover';
 
@@ -292,7 +297,7 @@ export default function CleanDashboard({
             </div>
           </div>
 
-          {/* Bottom Subject / Unit Cards with 3D Iridescent Badges */}
+          {/* Relatable Course Unit Cards with Clean Academic Icons & Logos */}
           <div className="space-y-3">
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
               {/* Subject 1: MIS101 */}
@@ -300,14 +305,23 @@ export default function CleanDashboard({
                 onClick={onOpenTable}
                 className="bg-white dark:bg-slate-900 p-4 sm:p-5 rounded-2xl sm:rounded-3xl border border-slate-200/60 dark:border-slate-800/80 shadow-xs hover:shadow-md transition-all cursor-pointer flex flex-col justify-between group"
               >
-                <div className="flex justify-center py-1 sm:py-2 group-hover:scale-105 transition-transform">
-                  <Flower3D className="w-16 h-16 sm:w-20 sm:h-20" />
+                <div className="flex justify-between items-start mb-3">
+                  <MIS101Icon className="w-12 h-12 sm:w-14 sm:h-14 group-hover:scale-105 transition-transform" />
+                  <span className="px-2 py-0.5 rounded-full bg-blue-50 dark:bg-blue-950 text-blue-700 dark:text-blue-300 font-mono text-[10px] font-bold">
+                    MIS101
+                  </span>
                 </div>
-                <div className="mt-2 sm:mt-3">
-                  <h4 className="font-bold text-xs text-slate-900 dark:text-white">MIS101 - Management Info</h4>
-                  <p className="text-[10px] sm:text-[11px] text-slate-400 mt-0.5">2 of 10 students at risk</p>
-                  <div className="w-full bg-slate-100 dark:bg-slate-800 h-1.5 rounded-full mt-2 overflow-hidden">
-                    <div className="bg-indigo-500 h-full rounded-full" style={{ width: '80%' }} />
+
+                <div className="mt-1">
+                  <h4 className="font-bold text-xs text-slate-900 dark:text-white leading-tight">Management Information Systems</h4>
+                  <p className="text-[10px] text-slate-400 mt-0.5">Enterprise Systems & Business Data</p>
+                  
+                  <div className="flex items-center justify-between text-[10px] text-slate-500 mt-3 mb-1">
+                    <span>2 of 10 at risk</span>
+                    <span className="font-bold text-emerald-600 font-mono">80% On Track</span>
+                  </div>
+                  <div className="w-full bg-slate-100 dark:bg-slate-800 h-1.5 rounded-full overflow-hidden">
+                    <div className="bg-gradient-to-r from-blue-500 to-indigo-600 h-full rounded-full" style={{ width: '80%' }} />
                   </div>
                 </div>
               </div>
@@ -317,14 +331,23 @@ export default function CleanDashboard({
                 onClick={onOpenTable}
                 className="bg-white dark:bg-slate-900 p-4 sm:p-5 rounded-2xl sm:rounded-3xl border border-slate-200/60 dark:border-slate-800/80 shadow-xs hover:shadow-md transition-all cursor-pointer flex flex-col justify-between group"
               >
-                <div className="flex justify-center py-1 sm:py-2 group-hover:scale-105 transition-transform">
-                  <Star3D className="w-16 h-16 sm:w-20 sm:h-20" />
+                <div className="flex justify-between items-start mb-3">
+                  <ICT201Icon className="w-12 h-12 sm:w-14 sm:h-14 group-hover:scale-105 transition-transform" />
+                  <span className="px-2 py-0.5 rounded-full bg-purple-50 dark:bg-purple-950 text-purple-700 dark:text-purple-300 font-mono text-[10px] font-bold">
+                    ICT201
+                  </span>
                 </div>
-                <div className="mt-2 sm:mt-3">
-                  <h4 className="font-bold text-xs text-slate-900 dark:text-white">ICT201 - Database Systems</h4>
-                  <p className="text-[10px] sm:text-[11px] text-slate-400 mt-0.5">2 of 10 students at risk</p>
-                  <div className="w-full bg-slate-100 dark:bg-slate-800 h-1.5 rounded-full mt-2 overflow-hidden">
-                    <div className="bg-indigo-500 h-full rounded-full" style={{ width: '80%' }} />
+
+                <div className="mt-1">
+                  <h4 className="font-bold text-xs text-slate-900 dark:text-white leading-tight">Database Systems & Modeling</h4>
+                  <p className="text-[10px] text-slate-400 mt-0.5">Relational SQL & Schema Design</p>
+                  
+                  <div className="flex items-center justify-between text-[10px] text-slate-500 mt-3 mb-1">
+                    <span>2 of 10 at risk</span>
+                    <span className="font-bold text-purple-600 font-mono">80% On Track</span>
+                  </div>
+                  <div className="w-full bg-slate-100 dark:bg-slate-800 h-1.5 rounded-full overflow-hidden">
+                    <div className="bg-gradient-to-r from-purple-500 to-violet-600 h-full rounded-full" style={{ width: '80%' }} />
                   </div>
                 </div>
               </div>
@@ -334,14 +357,23 @@ export default function CleanDashboard({
                 onClick={onOpenTable}
                 className="bg-white dark:bg-slate-900 p-4 sm:p-5 rounded-2xl sm:rounded-3xl border border-slate-200/60 dark:border-slate-800/80 shadow-xs hover:shadow-md transition-all cursor-pointer flex flex-col justify-between group"
               >
-                <div className="flex justify-center py-1 sm:py-2 group-hover:scale-105 transition-transform">
-                  <Arrow3D className="w-16 h-16 sm:w-20 sm:h-20" />
+                <div className="flex justify-between items-start mb-3">
+                  <BUS301Icon className="w-12 h-12 sm:w-14 sm:h-14 group-hover:scale-105 transition-transform" />
+                  <span className="px-2 py-0.5 rounded-full bg-emerald-50 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300 font-mono text-[10px] font-bold">
+                    BUS301
+                  </span>
                 </div>
-                <div className="mt-2 sm:mt-3">
-                  <h4 className="font-bold text-xs text-slate-900 dark:text-white">BUS301 - Business Analytics</h4>
-                  <p className="text-[10px] sm:text-[11px] text-slate-400 mt-0.5">1 of 10 students at risk</p>
-                  <div className="w-full bg-slate-100 dark:bg-slate-800 h-1.5 rounded-full mt-2 overflow-hidden">
-                    <div className="bg-indigo-500 h-full rounded-full" style={{ width: '90%' }} />
+
+                <div className="mt-1">
+                  <h4 className="font-bold text-xs text-slate-900 dark:text-white leading-tight">Business Analytics</h4>
+                  <p className="text-[10px] text-slate-400 mt-0.5">Predictive Modeling & BI Reporting</p>
+                  
+                  <div className="flex items-center justify-between text-[10px] text-slate-500 mt-3 mb-1">
+                    <span>1 of 10 at risk</span>
+                    <span className="font-bold text-emerald-600 font-mono">90% On Track</span>
+                  </div>
+                  <div className="w-full bg-slate-100 dark:bg-slate-800 h-1.5 rounded-full overflow-hidden">
+                    <div className="bg-gradient-to-r from-emerald-500 to-teal-600 h-full rounded-full" style={{ width: '90%' }} />
                   </div>
                 </div>
               </div>
@@ -352,7 +384,7 @@ export default function CleanDashboard({
               onClick={onOpenTable}
               className="w-full py-3 sm:py-3.5 rounded-2xl bg-slate-900 dark:bg-slate-800 hover:bg-slate-800 dark:hover:bg-slate-700 text-white font-semibold text-xs shadow-md transition-all flex items-center justify-center gap-2"
             >
-              <span>View all 50 student records in master table</span>
+              <span>View all 50 student records across all units in master table</span>
               <ArrowRight className="w-4 h-4 text-indigo-400" />
             </button>
           </div>
@@ -410,8 +442,8 @@ export default function CleanDashboard({
               {/* Item 1 */}
               <div className="flex items-center justify-between gap-3 group cursor-pointer">
                 <div className="flex items-center gap-2.5 sm:gap-3 min-w-0">
-                  <div className="p-1.5 rounded-2xl bg-indigo-50 dark:bg-indigo-950/50 shrink-0">
-                    <Cube3D className="w-6 h-6 sm:w-7 sm:h-7" />
+                  <div className="p-2.5 rounded-2xl bg-emerald-50 text-emerald-600 dark:bg-emerald-950/50 dark:text-emerald-400 shrink-0">
+                    <UserCheck className="w-4 h-4" />
                   </div>
                   <div className="min-w-0">
                     <h5 className="font-bold text-xs text-slate-900 dark:text-white group-hover:text-indigo-600 transition-colors truncate">
@@ -429,8 +461,8 @@ export default function CleanDashboard({
               {/* Item 2 */}
               <div className="flex items-center justify-between gap-3 group cursor-pointer">
                 <div className="flex items-center gap-2.5 sm:gap-3 min-w-0">
-                  <div className="p-1.5 rounded-2xl bg-purple-50 dark:bg-purple-950/50 shrink-0">
-                    <Quote3D className="w-6 h-6 sm:w-7 sm:h-7" />
+                  <div className="p-2.5 rounded-2xl bg-indigo-50 text-indigo-600 dark:bg-indigo-950/50 dark:text-indigo-400 shrink-0">
+                    <Terminal className="w-4 h-4" />
                   </div>
                   <div className="min-w-0">
                     <h5 className="font-bold text-xs text-slate-900 dark:text-white group-hover:text-indigo-600 transition-colors truncate">
@@ -448,8 +480,8 @@ export default function CleanDashboard({
               {/* Item 3 */}
               <div className="flex items-center justify-between gap-3 group cursor-pointer">
                 <div className="flex items-center gap-2.5 sm:gap-3 min-w-0">
-                  <div className="p-1.5 rounded-2xl bg-pink-50 dark:bg-pink-950/50 shrink-0">
-                    <Ribbon3D className="w-6 h-6 sm:w-7 sm:h-7" />
+                  <div className="p-2.5 rounded-2xl bg-purple-50 text-purple-600 dark:bg-purple-950/50 dark:text-purple-400 shrink-0">
+                    <FileSpreadsheet className="w-4 h-4" />
                   </div>
                   <div className="min-w-0">
                     <h5 className="font-bold text-xs text-slate-900 dark:text-white group-hover:text-indigo-600 transition-colors truncate">
@@ -467,8 +499,8 @@ export default function CleanDashboard({
               {/* Item 4 */}
               <div className="flex items-center justify-between gap-3 group cursor-pointer">
                 <div className="flex items-center gap-2.5 sm:gap-3 min-w-0">
-                  <div className="p-1.5 rounded-2xl bg-indigo-50 dark:bg-indigo-950/50 shrink-0">
-                    <Cube3D className="w-6 h-6 sm:w-7 sm:h-7" />
+                  <div className="p-2.5 rounded-2xl bg-amber-50 text-amber-600 dark:bg-amber-950/50 dark:text-amber-400 shrink-0">
+                    <ShieldCheck className="w-4 h-4" />
                   </div>
                   <div className="min-w-0">
                     <h5 className="font-bold text-xs text-slate-900 dark:text-white group-hover:text-indigo-600 transition-colors truncate">
