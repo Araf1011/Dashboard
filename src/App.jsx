@@ -10,7 +10,7 @@ import RoadmapView from './components/RoadmapView';
 import ProposalView from './components/ProposalView';
 import EmailModal from './components/EmailModal';
 import InterventionModal from './components/InterventionModal';
-import { CheckCircle2, AlertCircle, Info, X } from 'lucide-react';
+import { CheckCircle2, AlertCircle, Info, X, GraduationCap, Sun, Moon } from 'lucide-react';
 
 export default function App() {
   const [activeTab, setActiveTab] = useState('dashboard');
@@ -198,9 +198,30 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-[#f8f9fc] dark:bg-[#0c0b14] text-slate-800 dark:text-slate-100 flex transition-colors duration-200">
-      {/* Left Icon Rail (Sticky) */}
-      <div className="sticky top-0 h-screen border-r border-slate-200/70 dark:border-slate-800/80 bg-white/70 dark:bg-slate-900/40 backdrop-blur-md z-30">
+    <div className="min-h-screen bg-[#f8f9fc] dark:bg-[#0c0b14] text-slate-800 dark:text-slate-100 flex flex-col md:flex-row transition-colors duration-200">
+      {/* Mobile Top Header (only visible on mobile < md) */}
+      <header className="md:hidden sticky top-0 z-30 bg-white/90 dark:bg-[#0e0c18]/90 backdrop-blur-md border-b border-slate-200/80 dark:border-slate-800/80 px-4 py-3 flex items-center justify-between">
+        <div className="flex items-center gap-2.5">
+          <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-purple-600 to-indigo-500 flex items-center justify-center text-white shadow-sm">
+            <GraduationCap className="w-4 h-4" />
+          </div>
+          <div>
+            <h1 className="text-xs font-extrabold tracking-tight text-slate-900 dark:text-white">ASRIS Platform</h1>
+            <p className="text-[10px] text-slate-400 font-medium">KOI ICT753 • Dr. Sweta Thakur</p>
+          </div>
+        </div>
+
+        <button
+          onClick={() => setDarkMode(!darkMode)}
+          className="p-2 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-300 transition-colors"
+          title="Toggle Theme"
+        >
+          {darkMode ? <Sun className="w-4 h-4 text-amber-400" /> : <Moon className="w-4 h-4" />}
+        </button>
+      </header>
+
+      {/* Navigation Rail (Desktop sticky left rail & Mobile bottom dock) */}
+      <div className="hidden md:block sticky top-0 h-screen border-r border-slate-200/70 dark:border-slate-800/80 bg-white/70 dark:bg-slate-900/40 backdrop-blur-md z-30">
         <SidebarRail
           activeTab={activeTab}
           setActiveTab={setActiveTab}
@@ -209,8 +230,18 @@ export default function App() {
         />
       </div>
 
-      {/* Main Content Area */}
-      <div className="flex-1 min-w-0 p-4 sm:p-6 lg:p-8 max-w-[1440px] mx-auto w-full">
+      {/* Mobile bottom dock (fixed at bottom on < md) */}
+      <div className="md:hidden">
+        <SidebarRail
+          activeTab={activeTab}
+          setActiveTab={setActiveTab}
+          darkMode={darkMode}
+          setDarkMode={setDarkMode}
+        />
+      </div>
+
+      {/* Main Content Area (with bottom padding on mobile for dock) */}
+      <main className="flex-1 min-w-0 p-3 sm:p-5 lg:p-8 pb-24 md:pb-8 max-w-[1440px] mx-auto w-full">
         {activeTab === 'dashboard' && (
           <CleanDashboard
             students={students}
@@ -299,7 +330,7 @@ export default function App() {
             <ProposalView />
           </div>
         )}
-      </div>
+      </main>
 
       {/* Modals */}
       <EmailModal
@@ -317,26 +348,26 @@ export default function App() {
       />
 
       {/* Toast Notifications */}
-      <div className="fixed bottom-5 right-5 z-50 flex flex-col gap-2 pointer-events-none">
+      <div className="fixed bottom-20 md:bottom-5 right-3 md:right-5 z-50 flex flex-col gap-2 pointer-events-none max-w-[calc(100vw-24px)]">
         {toasts.map((toast) => (
           <div
             key={toast.id}
-            className="pointer-events-auto flex items-start gap-3 p-3.5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-xl max-w-sm"
+            className="pointer-events-auto flex items-start gap-3 p-3.5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-xl max-w-sm text-xs"
           >
-            {toast.type === 'success' && <CheckCircle2 className="w-5 h-5 text-emerald-500 shrink-0 mt-0.5" />}
-            {toast.type === 'error' && <AlertCircle className="w-5 h-5 text-rose-500 shrink-0 mt-0.5" />}
-            {toast.type === 'info' && <Info className="w-5 h-5 text-indigo-500 shrink-0 mt-0.5" />}
+            {toast.type === 'success' && <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0 mt-0.5" />}
+            {toast.type === 'error' && <AlertCircle className="w-4 h-4 text-rose-500 shrink-0 mt-0.5" />}
+            {toast.type === 'info' && <Info className="w-4 h-4 text-indigo-500 shrink-0 mt-0.5" />}
 
-            <div className="flex-1 text-xs">
-              <div className="font-bold text-slate-900 dark:text-white">{toast.title}</div>
-              <div className="text-slate-500 mt-0.5">{toast.message}</div>
+            <div className="flex-1">
+              <div className="font-bold text-slate-900 dark:text-white text-xs">{toast.title}</div>
+              <div className="text-slate-500 text-[11px] mt-0.5 leading-snug">{toast.message}</div>
             </div>
 
             <button
               onClick={() => removeToast(toast.id)}
-              className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200"
+              className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 p-0.5"
             >
-              <X className="w-4 h-4" />
+              <X className="w-3.5 h-3.5" />
             </button>
           </div>
         ))}
