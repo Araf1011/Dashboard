@@ -4,10 +4,10 @@ import { INITIAL_STUDENTS } from './data/mockData';
 import SidebarRail from './components/SidebarRail';
 import CleanDashboard from './components/CleanDashboard';
 import StudentsView from './components/StudentsView';
-import ArchitectureView from './components/ArchitectureView';
-import DiagramsView from './components/DiagramsView';
-import RoadmapView from './components/RoadmapView';
-import ProposalView from './components/ProposalView';
+import AttendanceView from './components/AttendanceView';
+import InterventionsView from './components/InterventionsView';
+import NotificationsView from './components/NotificationsView';
+import SettingsView from './components/SettingsView';
 import EmailModal from './components/EmailModal';
 import InterventionModal from './components/InterventionModal';
 import { CheckCircle2, AlertCircle, Info, X, GraduationCap, Sun, Moon } from 'lucide-react';
@@ -197,6 +197,8 @@ export default function App() {
     addToast('success', 'Master Dataset Exported', 'Downloaded KOI_ICT753_ASRIS_Master_Dataset.csv');
   };
 
+  const atRiskCount = students.filter(s => s.stillAtRisk.includes('Needs Follow Up')).length;
+
   return (
     <div className="min-h-screen bg-[#f8f9fc] dark:bg-[#0c0b14] text-slate-800 dark:text-slate-100 flex flex-col md:flex-row transition-colors duration-200">
       {/* Mobile Top Header (only visible on mobile < md) */}
@@ -220,27 +222,29 @@ export default function App() {
         </button>
       </header>
 
-      {/* Navigation Rail (Desktop sticky left rail & Mobile bottom dock) */}
+      {/* Desktop Sticky Navigation Rail */}
       <div className="hidden md:block sticky top-0 h-screen border-r border-slate-200/70 dark:border-slate-800/80 bg-white/70 dark:bg-slate-900/40 backdrop-blur-md z-30">
         <SidebarRail
           activeTab={activeTab}
           setActiveTab={setActiveTab}
           darkMode={darkMode}
           setDarkMode={setDarkMode}
+          atRiskCount={atRiskCount}
         />
       </div>
 
-      {/* Mobile bottom dock (fixed at bottom on < md) */}
+      {/* Mobile Bottom Dock */}
       <div className="md:hidden">
         <SidebarRail
           activeTab={activeTab}
           setActiveTab={setActiveTab}
           darkMode={darkMode}
           setDarkMode={setDarkMode}
+          atRiskCount={atRiskCount}
         />
       </div>
 
-      {/* Main Content Area (with bottom padding on mobile for dock) */}
+      {/* Main Content Area */}
       <main className="flex-1 min-w-0 p-3 sm:p-5 lg:p-8 pb-24 md:pb-8 max-w-[1440px] mx-auto w-full">
         {activeTab === 'dashboard' && (
           <CleanDashboard
@@ -283,51 +287,81 @@ export default function App() {
           </div>
         )}
 
-        {activeTab === 'architecture' && (
+        {activeTab === 'attendance' && (
           <div className="space-y-4">
-            <button
-              onClick={() => setActiveTab('dashboard')}
-              className="text-xs font-semibold text-indigo-600 dark:text-indigo-400 hover:underline flex items-center gap-1"
-            >
-              ← Back to Executive Dashboard
-            </button>
-            <ArchitectureView />
+            <div className="flex items-center justify-between">
+              <button
+                onClick={() => setActiveTab('dashboard')}
+                className="text-xs font-semibold text-indigo-600 dark:text-indigo-400 hover:underline flex items-center gap-1"
+              >
+                ← Back to Executive Dashboard
+              </button>
+            </div>
+            <AttendanceView students={students} />
           </div>
         )}
 
-        {activeTab === 'diagrams' && (
+        {activeTab === 'interventions' && (
           <div className="space-y-4">
-            <button
-              onClick={() => setActiveTab('dashboard')}
-              className="text-xs font-semibold text-indigo-600 dark:text-indigo-400 hover:underline flex items-center gap-1"
-            >
-              ← Back to Executive Dashboard
-            </button>
-            <DiagramsView />
+            <div className="flex items-center justify-between">
+              <button
+                onClick={() => setActiveTab('dashboard')}
+                className="text-xs font-semibold text-indigo-600 dark:text-indigo-400 hover:underline flex items-center gap-1"
+              >
+                ← Back to Executive Dashboard
+              </button>
+            </div>
+            <InterventionsView 
+              students={students} 
+              onOpenInterventionModal={(student) => {
+                setSelectedStudentForIntervention(student);
+                setInterventionModalOpen(true);
+              }} 
+            />
           </div>
         )}
 
-        {activeTab === 'roadmap' && (
+        {activeTab === 'notifications' && (
           <div className="space-y-4">
-            <button
-              onClick={() => setActiveTab('dashboard')}
-              className="text-xs font-semibold text-indigo-600 dark:text-indigo-400 hover:underline flex items-center gap-1"
-            >
-              ← Back to Executive Dashboard
-            </button>
-            <RoadmapView />
+            <div className="flex items-center justify-between">
+              <button
+                onClick={() => setActiveTab('dashboard')}
+                className="text-xs font-semibold text-indigo-600 dark:text-indigo-400 hover:underline flex items-center gap-1"
+              >
+                ← Back to Executive Dashboard
+              </button>
+            </div>
+            <NotificationsView 
+              students={students} 
+              onOpenEmailModal={(student) => {
+                setSelectedStudentForEmail(student);
+                setEmailModalOpen(true);
+              }} 
+              onBatchDispatch={handleBatchDispatch} 
+            />
           </div>
         )}
 
-        {activeTab === 'proposal' && (
+        {activeTab === 'settings' && (
           <div className="space-y-4">
-            <button
-              onClick={() => setActiveTab('dashboard')}
-              className="text-xs font-semibold text-indigo-600 dark:text-indigo-400 hover:underline flex items-center gap-1"
-            >
-              ← Back to Executive Dashboard
-            </button>
-            <ProposalView />
+            <div className="flex items-center justify-between">
+              <button
+                onClick={() => setActiveTab('dashboard')}
+                className="text-xs font-semibold text-indigo-600 dark:text-indigo-400 hover:underline flex items-center gap-1"
+              >
+                ← Back to Executive Dashboard
+              </button>
+            </div>
+            <SettingsView
+              attendanceThreshold={attendanceThreshold}
+              setAttendanceThreshold={setAttendanceThreshold}
+              submissionThreshold={submissionThreshold}
+              setSubmissionThreshold={setSubmissionThreshold}
+              quizFlag={quizFlag}
+              setQuizFlag={setQuizFlag}
+              onRunSimulation={runAlgorithmEvaluation}
+              isSimulating={isSimulating}
+            />
           </div>
         )}
       </main>

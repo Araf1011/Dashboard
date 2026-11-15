@@ -2,23 +2,23 @@ import React from 'react';
 import { 
   LayoutGrid, 
   Users, 
-  Layers, 
-  Workflow, 
-  Calendar, 
-  FileText, 
+  CalendarCheck, 
+  UserCheck, 
+  Bell, 
+  Settings, 
   Moon, 
   Sun,
   GraduationCap
 } from 'lucide-react';
 
-export default function SidebarRail({ activeTab, setActiveTab, darkMode, setDarkMode }) {
+export default function SidebarRail({ activeTab, setActiveTab, darkMode, setDarkMode, atRiskCount }) {
   const navItems = [
     { id: 'dashboard', icon: LayoutGrid, label: 'Dashboard', tooltip: 'Executive Dashboard' },
-    { id: 'students', icon: Users, label: 'Roster', tooltip: 'Master Student Roster' },
-    { id: 'architecture', icon: Layers, label: '3-Tier', tooltip: '3-Tier Architecture' },
-    { id: 'diagrams', icon: Workflow, label: 'Diagrams', tooltip: 'UML & Appendix Diagrams' },
-    { id: 'roadmap', icon: Calendar, label: 'Timeline', tooltip: 'Gantt WBS Timeline' },
-    { id: 'proposal', icon: FileText, label: 'Proposal', tooltip: 'Proposal & References' },
+    { id: 'students', icon: Users, label: 'Students', tooltip: 'Student Risk Roster', badge: atRiskCount },
+    { id: 'attendance', icon: CalendarCheck, label: 'Attendance', tooltip: 'Attendance & Tutorials' },
+    { id: 'interventions', icon: UserCheck, label: 'Cases', tooltip: 'Interventions & Counseling' },
+    { id: 'notifications', icon: Bell, label: 'Alerts', tooltip: 'Notification Audit Log' },
+    { id: 'settings', icon: Settings, label: 'Settings', tooltip: 'Rules & Thresholds' },
   ];
 
   return (
@@ -53,6 +53,11 @@ export default function SidebarRail({ activeTab, setActiveTab, darkMode, setDark
                   title={item.tooltip}
                 >
                   <Icon className="w-5 h-5" />
+
+                  {/* Badge */}
+                  {item.badge !== undefined && item.badge > 0 && (
+                    <span className="absolute top-1 right-1 w-2 h-2 rounded-full bg-rose-500" />
+                  )}
 
                   {/* Tooltip on hover */}
                   <span className="absolute left-14 px-2.5 py-1 rounded-xl bg-slate-900 text-white text-[11px] whitespace-nowrap opacity-0 pointer-events-none group-hover:opacity-100 transition-opacity z-50 shadow-lg font-medium">
@@ -91,7 +96,7 @@ export default function SidebarRail({ activeTab, setActiveTab, darkMode, setDark
               <button
                 key={item.id}
                 onClick={() => setActiveTab(item.id)}
-                className={`flex flex-col items-center justify-center py-1 px-2 rounded-xl transition-all ${
+                className={`flex flex-col items-center justify-center py-1 px-2 rounded-xl transition-all relative ${
                   isActive
                     ? 'text-indigo-600 dark:text-indigo-400 font-bold scale-105'
                     : 'text-slate-400 hover:text-slate-600 dark:hover:text-slate-300'
@@ -103,6 +108,10 @@ export default function SidebarRail({ activeTab, setActiveTab, darkMode, setDark
                 <span className="text-[10px] mt-0.5 tracking-tight font-medium">
                   {item.label}
                 </span>
+
+                {item.badge !== undefined && item.badge > 0 && (
+                  <span className="absolute top-1 right-2 w-1.5 h-1.5 rounded-full bg-rose-500" />
+                )}
               </button>
             );
           })}

@@ -1,87 +1,77 @@
 # 🎓 ASRIS™ — Automated Student Risk Identification System
-### Enterprise Early-Intervention & Student Retention Intelligence Platform
-> **Demo Showcase for Stakeholders & Clients**  
-> Based on the King's Own Institute (KOI) ICT753 Industry Project Proposal • Supervised by Dr. Sweta Thakur
+### Enterprise Student Retention & Early Intervention Portal
+> **Client Demonstration Platform • King's Own Institute (KOI) ICT753 Industry Project (T126)**  
+> **Academic Supervisor:** Dr. Sweta Thakur
 
 ---
 
-## 📌 Executive Summary
+## 🌟 Overview & Business Objective
 
-In higher education institutions, **student attrition and course failure** frequently stem from delayed identification of vulnerable students. Manual monitoring of attendance spreadsheets, tutorial submissions, and quiz attempts is labor-intensive, error-prone, and sluggish (Tinto, 2017; Gibbs & Jenkins, 2019).
+In higher education, identifying vulnerable students through manual spreadsheet tracking is slow, disorganized, and labor-intensive (Tinto, 2017). Students who fall below attendance and tutorial milestones often fail because interventions occur too late in the trimester.
 
-**ASRIS (Automated Student Risk Identification System)** solves this crisis by digitalizing and automating academic risk classification:
-- **Proactive Early Detection:** Evaluates engagement metrics at **Week 4** (early intervention) and **Week 8** (mid-term evaluation) before final examination deadlines.
-- **Automated Remedial Dispatch:** Delivers personalized, step-by-step guidance emails to flagged students within a **strict 24-hour SLA**.
-- **Centralized Staff Cockpit:** Unifies multi-subject data (MIS101, ICT201, BUS301, DAT401, NET101) into an intuitive, real-time dashboard.
-- **Proven Impact:** Delivers **≥ 40% reduction in administrative manual workload** and **> 95% identification precision**.
-
----
-
-## 🖥️ Interactive Demo Walkthrough (For Clients & Reviewers)
-
-When testing this live prototype, here are the key workflows to explore:
-
-### 1. 📊 Executive Dashboard (Overview)
-- **Top Metrics:** Review real-time KPIs across the 50-student cohort: **Total Monitored (50)**, **Avg Attendance (68%)**, **Clearance Rate (84%)**, and **Persistent At-Risk (8)**.
-- **Smooth Spline Attendance Curve:** Hover over points on the natural spline graph to view day-by-day attendance hours and risk indicators (e.g., `Friday: 1h 32min • High Risk <50%`).
-- **Dynamic Risk Cutoff Slider:** Click `Cutoff: 50%` in the chart header to adjust the threshold slider (30% to 70%) and watch the algorithm dynamically recalculate student statuses in real-time.
-- **Course Status Cards:** View animated 3D iridescent cards for **MIS101**, **ICT201**, and **BUS301** displaying cohort progress bars.
-
-### 2. ⚡ Automated 24h Alert Dispatcher (Right Rail)
-- In the right-hand pastel action card, click **"Dispatch All 24h Alerts"**.
-- Triggers a batch notification run for all currently flagged students, increments their action count, and triggers a celebratory completion animation.
-
-### 3. 👥 Student Master Roster (Excel Data Layer Implementation)
-- Click the **Users icon** on the left rail or click **"View all 50 student records in master table"**.
-- **Instant Search & Filter:** Filter by Subject (MIS101, ICT201, BUS301, DAT401, NET101), Week Checkpoint (Week 4 or Week 8), or Risk Status (`YES - Needs Follow Up` vs `Resolved`).
-- **Visual Progress Bars:** Colored attendance and tutorial submission bars instantly highlight students below the 50% threshold.
-- **Export CSV:** Click **"Export Master CSV"** to download the clean, consolidated dataset ready for Microsoft Excel.
-
-### 4. ✉️ Simulated Remedial Email Notification
-- In any student row, click the **Paper Airplane icon**.
-- Opens the **Automated Remedial Notification Simulator**, demonstrating the exact personalized email sent to the student:
-  - Exact deficiency metrics (e.g. Attendance 30%, Tutorial 100%, Quiz Yes).
-  - Recommended stepwise recovery roadmap (LMS review, coordinator office hours, study contract).
-  - Compliance with KOI academic progression policies.
-- Click **"Dispatch Alert & Log Audit"** to confirm dispatch.
-
-### 5. 📝 Academic Counseling & Intervention Logger
-- In any student row, click the **User Check icon**.
-- Academic advisors can record **1-on-1 Counseling**, **Peer Tutoring Referrals**, or **Study Plan Agreements**, update the student's status to **Resolved**, and save advisor notes into the audit trail.
-
-### 6. 🏛️ 3-Tier Architecture & Appendix Schematics
-- Click the **Layers icon** to inspect the **3-Tier System Architecture** (Presentation Layer, Application Layer, Data Layer).
-- Click the **Workflow icon** to explore:
-  - **UML Class Diagram:** 8 relational entities (Student, Staff, Subject, Attendance, Tutorial, Assessment, Risk_Status, Notification) with Primary & Foreign Keys.
-  - **Activity Flowchart:** Ingestion &rarr; Cleaning &rarr; Week 4/8 Checkpoint &rarr; Email Trigger &rarr; Dashboard sync.
-  - **Sequence Diagram:** Message calls between Staff, DB, Python Engine, Student, and Dashboard.
-  - **Data Flow Diagram (DFD Level-1):** Information flows across external actors and data stores.
-
-### 7. 📅 Project Gantt Roadmap & WBS
-- Click the **Calendar icon** to view the **12-Week Capstone Timeline** (Weeks 2–12 across 5 phases and 12 work packages) with team responsibility allocations (Moses, Eddie, Abraham, Iqra) and the **ISO/IEC 31000 Risk & Mitigation Matrix**.
+**ASRIS** solves this by digitalizing and automating the student monitoring workflow:
+- **Early Algorithmic Checkpoints:** Automatically evaluates engagement at **Week 4** (early intervention) and **Week 8** (mid-term evaluation).
+- **Automated 24h Remedial Dispatch:** Dispatches targeted, step-by-step guidance emails to flagged students within a **strict 24-hour SLA**.
+- **Unified Academic Cockpit:** Centralizes attendance, tutorial homework, and quiz attempts across 5 core units (**MIS101**, **ICT201**, **BUS301**, **DAT401**, **NET101**).
+- **Demonstrated Results:** Reduces administrative workload by **≥ 40%** with **> 95% identification precision**.
 
 ---
 
-## 🛠️ Technology Stack
+## 📱 Mobile & Multi-Device Responsive Architecture
 
-| Layer | Technology | Purpose |
-|---|---|---|
-| **Frontend Framework** | React 19 + Vite 8 | Ultra-fast rendering, modular component architecture |
-| **Styling & Design System** | Tailwind CSS 3.4 | Modern soft-palette aesthetic, borderless canvas, light/dark mode |
-| **Data Visualization** | Recharts | Smooth natural spline curves, responsive charts, custom tooltips |
-| **Iconography** | Lucide React | Minimalist, high-clarity SVG iconography |
-| **Interactive Micro-actions** | Canvas Confetti | Celebratory feedback upon successful SLA dispatches and case resolutions |
-| **Data Processing Logic** | Python Simulation (Pandas / OpenPyXL) | `<50%` threshold evaluations, multi-subject data aggregation |
+Designed from the ground up for seamless operation across desktop, tablet, and mobile devices:
+- **Desktop View:** Sticky left icon rail, spacious multi-column layout, and wide spline graphs.
+- **Mobile & Tablet View:** Responsive top brand bar, fluid grid cards, and an intuitive **mobile bottom navigation dock** allowing quick thumb navigation on touch screens.
+- **Dark & Light Mode:** Instant reactive theme toggle.
 
 ---
 
-## 🚀 Running the Project Locally
+## 🖥️ Live Application Views & Features
 
-### Prerequisites
-- [Node.js](https://nodejs.org/) (v18 or higher recommended)
-- [npm](https://www.npmjs.com/) (v9 or higher)
+The web platform provides a focused set of functional views for faculty and advisors:
 
-### Installation & Launch
+### 1. 📊 Executive Dashboard
+- **Cohort KPIs:** Real-time visibility into **Total Monitored (50)**, **Avg Attendance (68%)**, **Clearance Rate (84%)**, and **Persistent At-Risk (8)**.
+- **Natural Spline Engagement Curve:** Smooth attendance velocity curve with custom interactive tooltips (`Friday: 1h 32min • High Risk <50%`) and Week 4 vs Week 8 comparison.
+- **Subject Status Cards:** Quick cards for **MIS101**, **ICT201**, and **BUS301** featuring 3D geometric visual markers and cohort progress bars.
+- **24-Hour Alert Action Card:** Single-click batch alert dispatcher with confetti celebration feedback.
+- **Intervention Agenda:** Chronological schedule of student counseling appointments and batch evaluation runs.
+
+### 2. 👥 Student Risk Master Roster
+- Direct implementation of the **KOI Standardized Excel Template** (50 students across 5 subjects).
+- Instant multi-filter: Search by ID/Name, filter by Subject, filter by Week (Week 4 or Week 8), or filter by Risk Status (`YES - Needs Follow Up` vs `Resolved`).
+- Visual progress bars for Attendance % and Tutorial Submission % (red below 50%, green above).
+- Individual action buttons to dispatch 24h remedial emails or log counseling sessions.
+- **1-Click Master CSV Export:** Downloads clean Excel-ready dataset directly.
+
+### 3. 📅 Attendance & Tutorial Submissions
+- Unit-by-unit tracking of weekly classroom presence and lab exercise submissions.
+- Highlights specific deficits (e.g. Attendance &lt;50% or Tutorial Homework &lt;50%) with clear status indicators.
+
+### 4. 🛡️ Interventions & Counseling Case Management
+- Documented record of student meetings, academic counseling sessions, and signed progression contracts.
+- Track case recovery rates and maintain audit notes logged by academic advisors.
+
+### 5. 🔔 Automated Alert Notifications & SLA Audit Trail
+- Time-stamped delivery log of automated remedial emails dispatched within the 24-hour SLA window.
+- Inspect exact email copy containing personalized student deficiency breakdowns and step-by-step guidance.
+
+### 6. ⚙️ Risk Rules & Algorithmic Thresholds
+- Interactive faculty configuration: Adjust attendance cutoff (`<50%`), tutorial cutoff (`<50%`), and quiz incomplete flags.
+- Trigger manual batch simulation runs for Week 4 and Week 8 checkpoints.
+
+---
+
+## 🏗️ Technical Architecture (Under the Hood)
+
+Behind the scenes, the system maintains a strict **3-Layer Architecture**:
+1. **Data Layer (Backend/Database):** Standardized tabular schema storing Student profiles, Subject details, Attendance records, Tutorial submission logs, Assessment attempts, Risk status checkpoints, and Notification audit logs (aligned with the project UML relational model).
+2. **Application Layer (Business Logic):** Algorithmic threshold classification, automated 24-hour notification triggers, and data consolidation routines.
+3. **Presentation Layer (Web Application):** Modern React 19 + Tailwind CSS frontend with Recharts visualization.
+
+---
+
+## 🚀 Running Locally
 
 ```bash
 # 1. Clone the repository
@@ -91,59 +81,17 @@ cd Dashboard
 # 2. Install dependencies
 npm install
 
-# 3. Start the local development server
+# 3. Start local development server
 npm run dev
 ```
 
-Open your browser and navigate to **`http://localhost:5173/`**.
-
-### Building for Production
-
-```bash
-# Compile optimized static build to /dist
-npm run build
-
-# Preview production build locally
-npm run preview
-```
+Open **`http://localhost:5173/`** in your browser.
 
 ---
 
-## 🌐 Deployment Options
+## 🌐 Live Deployment (GitHub Pages)
 
-### Option 1: GitHub Pages (Automated via GitHub Actions)
-This repository includes a pre-configured GitHub Actions workflow in `.github/workflows/deploy.yml`.
-1. Push this repository to GitHub on branch `main`.
-2. Go to repository **Settings** &rarr; **Pages**.
-3. Under **Build and deployment**, set **Source** to **GitHub Actions**.
-4. The site will automatically build and publish live at `https://araf1011.github.io/Dashboard/`.
-
-### Option 2: Vercel (1-Click Deployment)
-1. Import the repository at [vercel.com/new](https://vercel.com/new).
-2. Framework Preset: **Vite**.
-3. Root Directory: `./`.
-4. Click **Deploy**.
-
-### Option 3: Netlify
-1. Connect your repository at [app.netlify.com](https://app.netlify.com).
-2. Build command: `npm run build`.
-3. Publish directory: `dist`.
-4. Click **Deploy Site**.
-
----
-
-## 👥 Academic Project Team & Credits
-
-- **Institution:** King's Own Institute (KOI), Sydney, Australia (CRICOS 01871A)
-- **Unit:** ICT753 Industry Project (Trimester T126)
-- **Academic Supervisor:** Dr. Sweta Thakur
-- **Project Authors:**
-  - **Moses Kiprop KIPKOECH** — *Project Manager / Process Mapping Lead*
-  - **Eddie** — *Data Analyst / Dataset Preparation Lead*
-  - **Abraham** — *Data Scientist / Python Algorithmic Logic Lead*
-  - **Iqra** — *Developer / Excel Templates & Notification Workflow Lead*
-
----
-
-## 📄 License
-This prototype is developed for educational and demonstration purposes under the KOI ICT753 Industry Project curriculum.
+This repository includes automated CI/CD via GitHub Actions (`.github/workflows/deploy.yml`).
+1. In your GitHub repository: Go to **Settings** &rarr; **Pages**.
+2. Under **Build and deployment** &rarr; **Source**, select **GitHub Actions**.
+3. Live URL: **`https://araf1011.github.io/Dashboard/`**
